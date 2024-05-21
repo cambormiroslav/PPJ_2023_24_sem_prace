@@ -1,7 +1,13 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-05-19 16:05:51.629
+-- Last modification date: 2024-05-21 10:32:37.964
 
 -- tables
+-- Table: Country
+CREATE TABLE Country (
+    shortcut char(2)  NOT NULL,
+    CONSTRAINT Country_pk PRIMARY KEY (shortcut)
+);
+
 -- Table: Fourteen_Days_Weather
 CREATE TABLE Fourteen_Days_Weather (
     date datetime  NOT NULL,
@@ -30,12 +36,6 @@ CREATE TABLE Fourteen_Days_Weather (
     sunrise datetime  NULL,
     sunset datetime  NULL,
     CONSTRAINT Fourteen_Days_Weather_pk PRIMARY KEY (date)
-);
-
--- Table: State
-CREATE TABLE State (
-    shortcut char(2)  NOT NULL,
-    CONSTRAINT State_pk PRIMARY KEY (shortcut)
 );
 
 -- Table: Town
@@ -116,7 +116,7 @@ ALTER TABLE Weather_Hourly ADD CONSTRAINT FK_Hourly_Weather FOREIGN KEY FK_Hourl
 
 -- Reference: FK_Town (table: Town)
 ALTER TABLE Town ADD CONSTRAINT FK_Town FOREIGN KEY FK_Town (state_shortcut)
-    REFERENCES State (shortcut);
+    REFERENCES Country (shortcut);
 
 -- End of file.
 
