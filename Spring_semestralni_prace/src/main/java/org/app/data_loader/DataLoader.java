@@ -24,10 +24,7 @@ public class DataLoader {
         double lat = json_obj_lat_lon.getDouble("lat");
     }
 
-    public void load_14days_weather(String town) throws IOException {
-        double lat = 0.0;
-        double lon = 0.0;
-
+    public void load_14days_weather(String town, double lat, double lon) throws IOException {
         String url_14days_weather = String.format("http://api.openweathermap.org/data/2.5/forecast/daily?lat=%f&lon=%f&units=metric&cnt=14&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);
         JSONObject json_14days_weather = get_JSON(url_14days_weather);
 
@@ -72,10 +69,7 @@ public class DataLoader {
         }
     }
 
-    public void load_hourly_weather(String town) throws IOException {
-        double lat = 0.0;
-        double lon = 0.0;
-
+    public void load_hourly_weather(String town, double lat, double lon) throws IOException {
         String url_hourly_weather = String.format("https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=%f&lon=%f&units=metric&cnt=24&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);
         JSONObject json_hourly_weather = get_JSON(url_hourly_weather);
 
@@ -116,10 +110,7 @@ public class DataLoader {
             double rain_volume = get_rain_volume(json_object_hourly);
         }
     }
-    public void load_current_weather(String town) throws IOException {
-        double lat = 0.0;
-        double lon = 0.0;
-
+    public void load_current_weather(String town, double lat, double lon) throws IOException {
         String url_current_wheather = String.format("https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=metric&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);
         JSONObject json_current_wheather = get_JSON(url_current_wheather);
 

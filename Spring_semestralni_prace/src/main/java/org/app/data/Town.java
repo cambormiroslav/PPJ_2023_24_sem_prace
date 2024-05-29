@@ -1,9 +1,20 @@
 package org.app.data;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="Town")
 public class Town {
-    String name;
-    String location;
-    double lat;
-    double lon;
-    String state_shortcut;
+    @Id
+    @Column(name="name")
+    private String name;
+    @Column(name="location")
+    private String location;
+    @Column(name="lat")
+    private double lat;
+    @Column(name="lon")
+    private double lon;
+    @ManyToOne
+    @JoinColumn(name = "shortcut")
+    private Country country;
 }
