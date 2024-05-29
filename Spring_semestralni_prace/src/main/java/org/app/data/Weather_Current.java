@@ -55,4 +55,34 @@ public class Weather_Current {
     private Date sunset;
     @Column(name = "timezone")
     private int timezone;
+    public void setAll(Date date, Town town, String main_description, String alongside_description,
+                       String icon, String base, double temperature, double feel_like_temperature,
+                       double temperature_min, double temperature_max, int pressure, int humidity,
+                       int sea_level, int ground_level, int visibility, double wind_speed,
+                       int wind_degrees, double wind_gust, int clouds, double rain_volume_1h,
+                       Date sunrise, Date sunset, int timezone){
+        this.date = date;
+        this.town = town;
+        this.main_description = main_description;
+        this.alongside_description = alongside_description;
+        this.icon = icon;
+        this.base = base;
+        this.temperature = temperature;
+        this.feel_like_temperature = feel_like_temperature;
+        this.temperature_min = temperature_min;
+        this.temperature_max = temperature_max;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.sea_level = sea_level;
+        this.ground_level = ground_level;
+        this.visibility = visibility;
+        this.wind_speed = wind_speed;
+        this.wind_degrees = wind_degrees;
+        this.wind_gust = wind_gust;
+        this.clouds = clouds;
+        this.rain_volume_1h = rain_volume_1h;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+        this.timezone = timezone;
+    }
 }

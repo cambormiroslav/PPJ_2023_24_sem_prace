@@ -55,6 +55,25 @@ public class Weather_Hourly {
                        double temperature_max, int pressure, int humidity, int sea_level, int ground_level,
                        int visibility, double wind_speed, int wind_degrees, double wind_gust, int clouds,
                        int precipitation_of_rain, double rain_volume_1h){
-
+        this.date = date;
+        this.town = town;
+        this.main_description = main_description;
+        this.alongside_description = alongside_description;
+        this.icon = icon;
+        this.temperature = temperature;
+        this.feel_like_temperature = feel_like_temperature;
+        this.temperature_min = temperature_min;
+        this.temperature_max = temperature_max;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.sea_level = sea_level;
+        this.ground_level = ground_level;
+        this.visibility = visibility;
+        this.wind_speed = wind_speed;
+        this.wind_degrees = wind_degrees;
+        this.wind_gust = wind_gust;
+        this.clouds = clouds;
+        this.precipitation_of_rain = precipitation_of_rain;
+        this.rain_volume_1h = rain_volume_1h;
     }
 }

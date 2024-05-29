@@ -59,4 +59,38 @@ public class Fourteen_Days_Weather {
     private Date sunrise;
     @Column(name = "sunset")
     private Date sunset;
+
+    public void setAll(Date date, Town town, String main_description, String alongside_description,
+                       String icon, double temperature_min, double temperature_max, double temperature_day,
+                       double temperature_night, double temperature_eve, double temperature_morning,
+                       double feel_like_temperature_day, double feel_like_temperature_night,
+                       double feel_like_temperature_eve, double feel_like_temperature_morning, int pressure,
+                       int humidity, double wind_speed, int wind_degrees, double wind_gust, int clouds,
+                       int precipitation_of_rain, double rain, Date sunrise, Date sunset){
+        this.date = date;
+        this.town = town;
+        this.main_description = main_description;
+        this.alongside_description = alongside_description;
+        this.icon = icon;
+        this.temperature_min = temperature_min;
+        this.temperature_max = temperature_max;
+        this.temperature_day = temperature_day;
+        this.temperature_night = temperature_night;
+        this.temperature_eve = temperature_eve;
+        this.temperature_morning = temperature_morning;
+        this.feel_like_temperature_day = feel_like_temperature_day;
+        this.feel_like_temperature_night = feel_like_temperature_night;
+        this.feel_like_temperature_eve = feel_like_temperature_eve;
+        this.feel_like_temperature_morning = feel_like_temperature_morning;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.wind_speed = wind_speed;
+        this.wind_degrees = wind_degrees;
+        this.wind_gust = wind_gust;
+        this.clouds = clouds;
+        this.precipitation_of_rain = precipitation_of_rain;
+        this.rain = rain;
+        this.sunrise = sunrise;
+        this.sunset = sunset;
+    }
 }

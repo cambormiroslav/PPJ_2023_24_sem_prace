@@ -17,4 +17,12 @@ public class Town {
     @ManyToOne
     @JoinColumn(name = "shortcut")
     private Country country;
+
+    public void setAll(String name, String location, double lat, double lon, Country country){
+        this.name = name;
+        this.location = location;
+        this.lat = lat;
+        this.lon = lon;
+        this.country = country;
+    }
 }
