@@ -55,6 +55,7 @@ public class Weather_Current {
     private Date sunset;
     @Column(name = "timezone")
     private int timezone;
+
     public void setAll(Date date, Town town, String main_description, String alongside_description,
                        String icon, String base, double temperature, double feel_like_temperature,
                        double temperature_min, double temperature_max, int pressure, int humidity,
@@ -84,5 +85,189 @@ public class Weather_Current {
         this.sunrise = sunrise;
         this.sunset = sunset;
         this.timezone = timezone;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public void setMain_description(String main_description) {
+        this.main_description = main_description;
+    }
+
+    public String getMain_description() {
+        return main_description;
+    }
+
+    public void setAlongside_description(String alongside_description) {
+        this.alongside_description = alongside_description;
+    }
+
+    public String getAlongside_description() {
+        return alongside_description;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setFeel_like_temperature(double feel_like_temperature) {
+        this.feel_like_temperature = feel_like_temperature;
+    }
+
+    public double getFeel_like_temperature() {
+        return feel_like_temperature;
+    }
+
+    public void setTemperature_min(double temperature_min) {
+        this.temperature_min = temperature_min;
+    }
+
+    public double getTemperature_min() {
+        return temperature_min;
+    }
+
+    public void setTemperature_max(double temperature_max) {
+        this.temperature_max = temperature_max;
+    }
+
+    public double getTemperature_max() {
+        return temperature_max;
+    }
+
+    public void setPressure(int pressure) {
+        this.pressure = pressure;
+    }
+
+    public int getPressure() {
+        return pressure;
+    }
+
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public void setSea_level(int sea_level) {
+        this.sea_level = sea_level;
+    }
+
+    public int getSea_level() {
+        return sea_level;
+    }
+
+    public void setGround_level(int ground_level) {
+        this.ground_level = ground_level;
+    }
+
+    public int getGround_level() {
+        return ground_level;
+    }
+
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public void setWind_speed(double wind_speed) {
+        this.wind_speed = wind_speed;
+    }
+
+    public double getWind_speed() {
+        return wind_speed;
+    }
+
+    public void setWind_degrees(int wind_degrees) {
+        this.wind_degrees = wind_degrees;
+    }
+
+    public int getWind_degrees() {
+        return wind_degrees;
+    }
+
+    public void setWind_gust(double wind_gust) {
+        this.wind_gust = wind_gust;
+    }
+
+    public double getWind_gust() {
+        return wind_gust;
+    }
+
+    public void setClouds(int clouds) {
+        this.clouds = clouds;
+    }
+
+    public int getClouds() {
+        return clouds;
+    }
+
+    public void setRain_volume_1h(double rain_volume_1h) {
+        this.rain_volume_1h = rain_volume_1h;
+    }
+
+    public double getRain_volume_1h() {
+        return rain_volume_1h;
+    }
+
+    public void setSunrise(Date sunrise) {
+        this.sunrise = sunrise;
+    }
+
+    public Date getSunrise() {
+        return sunrise;
+    }
+
+    public void setSunset(Date sunset) {
+        this.sunset = sunset;
+    }
+
+    public Date getSunset() {
+        return sunset;
+    }
+
+    public void setTimezone(int timezone) {
+        this.timezone = timezone;
+    }
+
+    public int getTimezone() {
+        return timezone;
     }
 }

@@ -15,4 +15,8 @@ public class Country {
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
     }
+
+    public String getShortcut(){
+        return shortcut;
+    }
 }

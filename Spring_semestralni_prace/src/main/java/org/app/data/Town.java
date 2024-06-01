@@ -25,4 +25,44 @@ public class Town {
         this.lon = lon;
         this.country = country;
     }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setLocation(String location){
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLat(double lat){
+        this.lat = lat;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLon(double lon){
+        this.lon = lon;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setCountry(Country country){
+        this.country = country;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
 }
