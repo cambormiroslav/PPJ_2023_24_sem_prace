@@ -1,0 +1,22 @@
+package org.app.service;
+
+import org.app.data.Country;
+import org.app.data.Fourteen_Days_Weather;
+import org.app.repositories.Fourteen_Days_WeatherRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+@Service
+public class Fourteen_Days_WeatherService {
+
+    @Autowired
+    private Fourteen_Days_WeatherRepository fourteen_days_weather_repository;
+
+    public List<Fourteen_Days_Weather> getFourteenDaysWeathers() {
+        return StreamSupport.stream(fourteen_days_weather_repository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+}
