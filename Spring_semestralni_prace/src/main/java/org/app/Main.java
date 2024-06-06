@@ -1,13 +1,16 @@
 package org.app;
 
+import jakarta.validation.constraints.Null;
 import org.app.data.*;
 import org.app.data.Weather_Current;
 import org.app.data_loader.DataLoader;
 import org.app.repositories.CountryRepository;
 import org.app.service.*;
+import org.decimal4j.util.DoubleRounder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -18,20 +21,15 @@ import java.io.IOException;
 import java.util.Date;
 
 @SpringBootApplication
+//@EnableAutoConfiguration
 @EnableJpaRepositories("org.app.repositories")
 public class Main {
     private static DataLoader data_loader = new DataLoader();
 
-    @Bean(name="entityManagerFactory")
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        return sessionFactory;
-    }
-
-    @Bean
+    /*@Bean
     public Weather_CurrentService weatherCurrentService(){
         return new Weather_CurrentService();
-    }
+    }*/
 
     @Bean
     public Weather_HourlyService weatherHourlyService(){
@@ -53,15 +51,26 @@ public class Main {
         return new TownService();
     }
 
+    @Bean
+    public Country country(){
+        return new Country();
+    }
 
+    @Bean
+    public Town town(){
+        return new Town();
+    }
 
-
+    @Bean
+    public Weather_Current weather_current(){
+        return new Weather_Current();
+    }
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(Main.class);
         ApplicationContext ctx = app.run(args);
 
-        //getCurrentWeather(ctx, "Bilina", "CZ");
+        getCurrentWeather(ctx, "Bilina", "CZ");
     }
 
     private static void getCurrentWeather(ApplicationContext ctx, String town, String country){
@@ -81,12 +90,12 @@ public class Main {
             Country country_class = ctx.getBean(Country.class);
             country_class.setShortcut(country_get);
             Town town_class = ctx.getBean(Town.class);
-            town_class.setAll(town_get, location, lon, lat, country_class);
+            town_class.setAll(town_get, location, lat, lon, country_class);
 
             country_service.createOrUpdate(country_class);
             town_service.createOrUpdate(town_class);
 
-            JSONObject json_current_wheather = data_loader.load_town_and_country(town, country);
+            JSONObject json_current_wheather = data_loader.load_current_weather(town, lat, lon);
 
             Date datetime = data_loader.get_datetime(json_current_wheather, "dt");
 
@@ -134,8 +143,5 @@ public class Main {
         }catch (IOException e){
             System.out.println("Weather Current can not be downloaded.");
         }
-
-
-
     }
 }

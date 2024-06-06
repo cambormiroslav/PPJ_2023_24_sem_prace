@@ -11,7 +11,7 @@ public class Weather_Current {
     @Column(name = "date")
     private Date date;
     @OneToOne
-    @JoinColumn(name = "name")
+    @JoinColumn(name = "town_name")
     private Town town;
     @Column(name = "main_description")
     private String main_description;
