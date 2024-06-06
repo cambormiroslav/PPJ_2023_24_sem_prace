@@ -13,15 +13,11 @@ import java.util.Date;
 public class DataLoader {
     private static SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public void load_town_and_country(String town, String country) throws IOException {
+    public JSONObject load_town_and_country(String town, String country) throws IOException {
         String url_to_get_lat_and_lon = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&APPID=b90ae8e9a160e17dfd9a9115dac4cb80","Bilina","CZ");
         JSONObject json_obj_lat_lon = get_JSON_without_out_array(url_to_get_lat_and_lon);
 
-        String country_get = json_obj_lat_lon.get("country").toString();
-        String town_get = json_obj_lat_lon.get("name").toString();
-        String location = json_obj_lat_lon.get("state").toString();
-        double lon = json_obj_lat_lon.getDouble("lon");
-        double lat = json_obj_lat_lon.getDouble("lat");
+        return json_obj_lat_lon;
     }
 
     public void load_14days_weather(String town, double lat, double lon) throws IOException {
@@ -33,7 +29,7 @@ public class DataLoader {
         for (Object weather_14days : json_array_14days){
             JSONObject json_object_14days = (JSONObject) weather_14days;
 
-            String fourteen_days_datetime = get_datetime(json_object_14days, "dt");
+            Date fourteen_days_datetime = get_datetime(json_object_14days, "dt");
 
             //town
 
@@ -64,8 +60,8 @@ public class DataLoader {
             int clouds_percentage = get_int_part(json_object_14days, "clouds");
             double precipitation_of_rain = get_double_part(json_object_14days, "pop");
             double rain_volume_1h = get_double_part(json_object_14days, "rain");
-            String sunrise = get_datetime(json_object_14days, "sunrise");
-            String sunset = get_datetime(json_object_14days, "sunset");
+            Date sunrise = get_datetime(json_object_14days, "sunrise");
+            Date sunset = get_datetime(json_object_14days, "sunset");
         }
     }
 
@@ -78,7 +74,7 @@ public class DataLoader {
         for (Object hour_weather : json_array_hourly){
             JSONObject json_object_hourly = (JSONObject) hour_weather;
 
-            String hourly_date = get_datetime(json_object_hourly, "dt");
+            Date hourly_date = get_datetime(json_object_hourly, "dt");
 
             //town
 
@@ -110,45 +106,11 @@ public class DataLoader {
             double rain_volume = get_rain_volume(json_object_hourly);
         }
     }
-    public void load_current_weather(String town, double lat, double lon) throws IOException {
+    public JSONObject load_current_weather(String town, double lat, double lon) throws IOException {
         String url_current_wheather = String.format("https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=metric&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);
         JSONObject json_current_wheather = get_JSON(url_current_wheather);
 
-        String datetime = get_datetime(json_current_wheather, "dt");
-
-        //town
-
-        JSONArray weather_json_array = json_current_wheather.getJSONArray("weather");
-        JSONObject weather_json = weather_json_array.getJSONObject(0);
-        String main_description = get_string_part(weather_json, "main");
-        String alongside_description = get_string_part(weather_json, "description");
-        String icon = get_string_part(weather_json, "icon");
-
-        String base = get_string_part(json_current_wheather, "base");
-
-        JSONObject main = json_current_wheather.getJSONObject("main");
-        double temperature = get_double_part(main, "temp");
-        double feel_like_temperature = get_double_part(main, "feels_like");
-        double min_temperature = get_double_part(main, "temp_min");
-        double max_temperature = get_double_part(main, "temp_max");
-        int pressure = get_int_part(main, "pressure");
-        int humidity = get_int_part(main, "humidity");
-        int sea_level = get_int_part(main, "sea_level");
-        int ground_level = get_int_part(main, "grnd_level");
-
-        int visibility = get_int_part(json_current_wheather, "visibility");
-
-        JSONObject wind_json = json_current_wheather.getJSONObject("wind");
-        double wind_speed = get_double_part(wind_json, "speed");
-        int wind_degrees = get_int_part(wind_json, "deg");
-        double wind_gust = get_double_part(wind_json, "gust");
-
-        int clouds_percentage = get_clouds_percentage(json_current_wheather);
-        double rain_volume = get_rain_volume(json_current_wheather);
-
-        JSONObject sys_json = json_current_wheather.getJSONObject("sys");
-        String sunrise = get_datetime(sys_json, "sunrise");
-        String sunset = get_datetime(sys_json, "sunset");
+        return json_current_wheather;
     }
 
     private static JSONObject get_JSON_without_out_array(String url) throws IOException {
@@ -164,17 +126,19 @@ public class DataLoader {
         return new JSONObject(json);
     }
 
-    private static String get_datetime(JSONObject json_object, String key){
+    public Date get_datetime(JSONObject json_object, String key){
         try{
             long dt_hourly = json_object.getLong(key) * 1000;
             Date date_hourly_weather = new Date(dt_hourly);
-            return DateFor.format(date_hourly_weather);
+            return date_hourly_weather;
+            //return DateFor.format(date_hourly_weather);
         }catch(Exception e){
-            return "null";
+            return null;
+            //return "null";
         }
     }
 
-    private static String get_string_part(JSONObject json_object, String key){
+    public String get_string_part(JSONObject json_object, String key){
         try{
             return json_object.getString(key);
         }catch(Exception e){
@@ -182,7 +146,7 @@ public class DataLoader {
         }
     }
 
-    private static double get_double_part(JSONObject json_object, String key){
+    public double get_double_part(JSONObject json_object, String key){
         try{
             return json_object.getDouble(key);
         }catch(Exception e){
@@ -190,7 +154,7 @@ public class DataLoader {
         }
     }
 
-    private static int get_int_part(JSONObject json_object, String key){
+    public int get_int_part(JSONObject json_object, String key){
         try{
             return json_object.getInt(key);
         }catch(Exception e){
@@ -198,7 +162,7 @@ public class DataLoader {
         }
     }
 
-    private static int get_clouds_percentage(JSONObject json_object){
+    public int get_clouds_percentage(JSONObject json_object){
         try{
             return json_object.getJSONObject("clouds").getInt("all");
         }catch(Exception e){
@@ -206,7 +170,7 @@ public class DataLoader {
         }
     }
 
-    private static double get_rain_volume(JSONObject json_object){
+    public double get_rain_volume(JSONObject json_object){
         try{
             return json_object.getJSONObject("rain").getDouble("1h");
         }catch(Exception e){

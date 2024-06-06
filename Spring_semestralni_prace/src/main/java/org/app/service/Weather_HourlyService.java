@@ -19,4 +19,12 @@ public class Weather_HourlyService {
     public List<Weather_Hourly> getWeathersHourly() {
         return StreamSupport.stream(weather_hourly_repository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
+    public void createOrUpdate(Weather_Hourly weather_hourly){
+        weather_hourly_repository.save(weather_hourly);
+    }
+
+    public void delete() {
+        weather_hourly_repository.deleteAll();
+    }
 }

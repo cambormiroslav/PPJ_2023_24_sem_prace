@@ -19,4 +19,12 @@ public class Fourteen_Days_WeatherService {
     public List<Fourteen_Days_Weather> getFourteenDaysWeathers() {
         return StreamSupport.stream(fourteen_days_weather_repository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
+    public void createOrUpdate(Fourteen_Days_Weather fourteen_days_weather){
+        fourteen_days_weather_repository.save(fourteen_days_weather);
+    }
+
+    public void delete() {
+        fourteen_days_weather_repository.deleteAll();
+    }
 }

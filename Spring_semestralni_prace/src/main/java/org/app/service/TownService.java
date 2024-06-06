@@ -19,4 +19,8 @@ public class TownService {
     public List<Town> getTowns() {
         return StreamSupport.stream(town_repository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
+    public void createOrUpdate(Town town){
+        town_repository.save(town);
+    }
 }

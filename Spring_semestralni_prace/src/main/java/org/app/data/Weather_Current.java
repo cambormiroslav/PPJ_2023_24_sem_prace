@@ -53,15 +53,13 @@ public class Weather_Current {
     private Date sunrise;
     @Column(name = "sunset")
     private Date sunset;
-    @Column(name = "timezone")
-    private int timezone;
 
     public void setAll(Date date, Town town, String main_description, String alongside_description,
                        String icon, String base, double temperature, double feel_like_temperature,
                        double temperature_min, double temperature_max, int pressure, int humidity,
                        int sea_level, int ground_level, int visibility, double wind_speed,
                        int wind_degrees, double wind_gust, int clouds, double rain_volume_1h,
-                       Date sunrise, Date sunset, int timezone){
+                       Date sunrise, Date sunset){
         this.date = date;
         this.town = town;
         this.main_description = main_description;
@@ -84,7 +82,6 @@ public class Weather_Current {
         this.rain_volume_1h = rain_volume_1h;
         this.sunrise = sunrise;
         this.sunset = sunset;
-        this.timezone = timezone;
     }
 
     public void setDate(Date date) {
@@ -261,13 +258,5 @@ public class Weather_Current {
 
     public Date getSunset() {
         return sunset;
-    }
-
-    public void setTimezone(int timezone) {
-        this.timezone = timezone;
-    }
-
-    public int getTimezone() {
-        return timezone;
     }
 }

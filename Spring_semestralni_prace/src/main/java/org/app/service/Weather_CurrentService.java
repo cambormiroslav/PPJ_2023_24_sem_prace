@@ -6,6 +6,7 @@ import org.app.repositories.Weather_CurrentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -18,5 +19,13 @@ public class Weather_CurrentService {
 
     public List<Weather_Current> getWeathersCurrent() {
         return StreamSupport.stream(weather_current_repository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
+
+    public void createOrUpdate(Weather_Current weather_current){
+        weather_current_repository.save(weather_current);
+    }
+
+    public void delete() {
+        weather_current_repository.deleteAll();
     }
 }
