@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-05-21 10:32:37.964
+-- Last modification date: 2024-06-05 13:18:49.896
 
 -- tables
 -- Table: Country
@@ -72,7 +72,6 @@ CREATE TABLE Weather_Current (
     rain_volume_1h double(2,2)  NULL,
     sunrise datetime  NULL,
     sunset datetime  NULL,
-    timezone int  NULL,
     CONSTRAINT Weather_Current_pk PRIMARY KEY (date)
 );
 
