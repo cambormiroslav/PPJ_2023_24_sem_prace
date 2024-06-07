@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -25,7 +26,7 @@ public class Weather_CurrentService {
         weather_current_repository.save(weather_current);
     }
 
-    public void delete() {
-        weather_current_repository.deleteAll();
+    public void delete(Weather_Current weather_current) {
+        weather_current_repository.delete(weather_current);
     }
 }

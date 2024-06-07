@@ -1,9 +1,8 @@
 package org.app.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name="Country")
@@ -11,6 +10,8 @@ public class Country {
     @Id
     @Column(name="shortcut")
     private String shortcut;
+    @OneToMany(mappedBy = "country")
+    private Set<Town> towns;
 
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
@@ -18,5 +19,13 @@ public class Country {
 
     public String getShortcut(){
         return shortcut;
+    }
+
+    public void setTowns(Set<Town> towns) {
+        this.towns = towns;
+    }
+
+    public Set<Town> getTowns() {
+        return towns;
     }
 }

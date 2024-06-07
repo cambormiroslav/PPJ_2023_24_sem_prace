@@ -80,8 +80,8 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ApplicationContext ctx = app.run(args);
 
-        downloadCurrentWeather(ctx, "Bilina", "CZ");
-        //downloadHourlyWeather(ctx, "Bilina", "CZ");
+        downloadCurrentWeather(ctx, "Liberec", "CZ");
+        //downloadHourlyWeather(ctx, "Liberec", "CZ");
     }
 
     private static Town downloadTownAndCountry(ApplicationContext ctx, String town, String country){
@@ -113,9 +113,22 @@ public class Main {
 
     private static void downloadCurrentWeather(ApplicationContext ctx, String town, String country){
         Weather_CurrentService weather_current_service = ctx.getBean(Weather_CurrentService.class);
+        TownService town_service = ctx.getBean(TownService.class);
+        Town town_class;
 
         try{
-            Town town_class = downloadTownAndCountry(ctx, town, country);
+            if(town_service.exists(town))
+                town_class = town_service.getTownById(town);
+            else
+                town_class = downloadTownAndCountry(ctx, town, country);
+
+            List<Weather_Current> weather_current_list = weather_current_service.getWeathersCurrent();
+            for(Weather_Current weather : weather_current_list){
+                if(weather.getTown().getName().equals(town)) {
+                    System.out.println(weather.getTown().getName());
+                    weather_current_service.delete(weather);
+                }
+            }
 
             double lon = town_class.getLon();
             double lat = town_class.getLat();
@@ -158,7 +171,7 @@ public class Main {
             Date sunrise = data_loader.get_datetime(sys_json, "sunrise");
             Date sunset = data_loader.get_datetime(sys_json, "sunset");
 
-            weather_current_service.delete();
+            //weather_current_service.delete();
             Weather_Current weather_current_class = ctx.getBean(Weather_Current.class);
 
             weather_current_class.setAllNotNull(datetime, town_class, main_description, alongside_description,
@@ -196,12 +209,18 @@ public class Main {
     private static void downloadHourlyWeather(ApplicationContext ctx, String town, String country){
         TownService town_service = ctx.getBean(TownService.class);
         Weather_HourlyService weather_hourly_service = ctx.getBean(Weather_HourlyService.class);
-        Set<Weather_Hourly> weather_hourly_list = new HashSet<>();
+        Town town_class;
 
         try{
-
-            //Town town_class = downloadTownAndCountry(ctx, town, country);
-            Town town_class = town_service.getTownById(town);
+            List<Weather_Hourly > weather_hourly_list = weather_hourly_service.getWeathersHourly();
+            for(Weather_Hourly weather : weather_hourly_list) {
+                if(weather.getTown().getName().equals(town))
+                    weather_hourly_service.delete(weather);
+            }
+            if(town_service.exists(town))
+                town_class = town_service.getTownById(town);
+            else
+                town_class = downloadTownAndCountry(ctx, town, country);
 
             double lon = town_class.getLon();
             double lat = town_class.getLat();
@@ -242,7 +261,6 @@ public class Main {
                 double precipitation_of_rain = data_loader.get_double_part(json_object_hourly, "pop");
                 double rain_volume = data_loader.get_rain_volume(json_object_hourly);
 
-                //weather_hourly_service.delete();
                 Weather_Hourly weather_hourly_class = ctx.getBean(Weather_Hourly.class);
 
                 weather_hourly_class.setAllNotNull(datetime, town_class, main_description, alongside_description,
@@ -270,11 +288,8 @@ public class Main {
                     weather_hourly_class.setPrecipitation_of_rain(precipitation_of_rain);
                 if(rain_volume != -20000.0)
                     weather_hourly_class.setRain_volume_1h(rain_volume);
-
-                weather_hourly_list.add(weather_hourly_class);
+                weather_hourly_service.createOrUpdate(weather_hourly_class);
             }
-            town_class.setWeatherHourlySet(weather_hourly_list);
-            town_service.createOrUpdate(town_class);
         }
         catch (IOException e){
             System.out.println("Weather Current can not be downloaded.");

@@ -24,7 +24,7 @@ public class Weather_HourlyService {
         weather_hourly_repository.save(weather_hourly);
     }
 
-    public void delete() {
-        weather_hourly_repository.deleteAll();
+    public void delete(Weather_Hourly weather_hourly) {
+        weather_hourly_repository.delete(weather_hourly);
     }
 }

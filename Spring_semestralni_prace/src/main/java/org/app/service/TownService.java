@@ -25,8 +25,12 @@ public class TownService {
         town_repository.save(town);
     }
 
-    public Town getTownById(String id){
-        Optional<Town> town = town_repository.findById(id);
+    public Town getTownById(String name){
+        Optional<Town> town = town_repository.findById(name);
         return town.get();
+    }
+
+    public Boolean exists(String name){
+        return town_repository.existsById(name);
     }
 }

@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
+@IdClass(CompositeKey.class)
 @Table(name="Weather_Hourly")
 public class Weather_Hourly {
     @Id
     @Column(name = "date")
     private Date date;
+    @Id
     @ManyToOne
     @JoinColumn(name = "town_name")
     private Town town;

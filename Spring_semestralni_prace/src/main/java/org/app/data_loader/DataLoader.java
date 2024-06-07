@@ -14,7 +14,7 @@ public class DataLoader {
     private static SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public JSONObject load_town_and_country(String town, String country) throws IOException {
-        String url_to_get_lat_and_lon = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&APPID=b90ae8e9a160e17dfd9a9115dac4cb80","Bilina","CZ");
+        String url_to_get_lat_and_lon = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&APPID=b90ae8e9a160e17dfd9a9115dac4cb80",town, country);
         JSONObject json_obj_lat_lon = get_JSON_without_out_array(url_to_get_lat_and_lon);
 
         return json_obj_lat_lon;
