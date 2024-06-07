@@ -65,46 +65,12 @@ public class DataLoader {
         }
     }
 
-    public void load_hourly_weather(String town, double lat, double lon) throws IOException {
+    public JSONArray load_hourly_weather(double lat, double lon) throws IOException {
         String url_hourly_weather = String.format("https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=%f&lon=%f&units=metric&cnt=24&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);
         JSONObject json_hourly_weather = get_JSON(url_hourly_weather);
 
         JSONArray json_array_hourly = json_hourly_weather.getJSONArray("list");
-
-        for (Object hour_weather : json_array_hourly){
-            JSONObject json_object_hourly = (JSONObject) hour_weather;
-
-            Date hourly_date = get_datetime(json_object_hourly, "dt");
-
-            //town
-
-            JSONArray weather_hourly_json_array = json_object_hourly.getJSONArray("weather");
-            JSONObject weather_hourly_json = weather_hourly_json_array.getJSONObject(0);
-            String main_description = get_string_part(weather_hourly_json, "main");
-            String alongside_description = get_string_part(weather_hourly_json, "description");
-            String icon = get_string_part(weather_hourly_json, "icon");
-
-            JSONObject main_hourly = json_object_hourly.getJSONObject("main");
-            double temperature = get_double_part(main_hourly, "temp");
-            double feel_like_temperature = get_double_part(main_hourly, "feels_like");
-            double min_temperature = get_double_part(main_hourly, "temp_min");
-            double max_temperature = get_double_part(main_hourly, "temp_max");
-            int pressure = get_int_part(main_hourly, "pressure");
-            int humidity = get_int_part(main_hourly, "humidity");
-            int sea_level = get_int_part(main_hourly, "sea_level");
-            int ground_level = get_int_part(main_hourly, "grnd_level");
-
-            int visibility = get_int_part(json_object_hourly, "visibility");
-
-            JSONObject wind_json_hourly = json_object_hourly.getJSONObject("wind");
-            double wind_speed = get_double_part(wind_json_hourly, "speed");
-            int wind_degrees = get_int_part(wind_json_hourly, "deg");
-            double wind_gust = get_double_part(wind_json_hourly, "gust");
-
-            int clouds_percentage = get_clouds_percentage(json_object_hourly);
-            double precipitation_of_rain = get_double_part(json_object_hourly, "pop");
-            double rain_volume = get_rain_volume(json_object_hourly);
-        }
+        return json_array_hourly;
     }
     public JSONObject load_current_weather(String town, double lat, double lon) throws IOException {
         String url_current_wheather = String.format("https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=metric&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);

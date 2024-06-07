@@ -25,7 +25,7 @@ CREATE TABLE Fourteen_Days_Weather (
     wind_degrees int  NULL,
     wind_gust double(5,2)  NULL,
     clouds int  NULL,
-    precipitation_of_rain int  NULL,
+    precipitation_of_rain double(3,2)  NULL,
     rain double(4,2)  NULL,
     sunrise datetime  NULL,
     sunset datetime  NULL,
@@ -77,7 +77,7 @@ CREATE TABLE Weather_Hourly (
     feel_like_temperature double(4,2)  NOT NULL,
     temperature_min double(4,2)  NOT NULL,
     temperature_max double(4,2)  NOT NULL,
-    pressure double(4,2)  NULL,
+    pressure int  NULL,
     humidity int  NULL,
     sea_level int  NULL,
     ground_level int  NULL,
@@ -86,7 +86,7 @@ CREATE TABLE Weather_Hourly (
     wind_degrees int  NULL,
     wind_gust double(5,2)  NULL,
     clouds int  NULL,
-    precipitation_of_rain int  NULL,
+    precipitation_of_rain double(3,2)  NULL,
     rain_volume_1h double(4,2)  NULL,
     CONSTRAINT Weather_Hourly_pk PRIMARY KEY (date)
 );

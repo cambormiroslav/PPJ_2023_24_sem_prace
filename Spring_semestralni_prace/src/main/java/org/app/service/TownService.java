@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -22,5 +23,10 @@ public class TownService {
 
     public void createOrUpdate(Town town){
         town_repository.save(town);
+    }
+
+    public Town getTownById(String id){
+        Optional<Town> town = town_repository.findById(id);
+        return town.get();
     }
 }

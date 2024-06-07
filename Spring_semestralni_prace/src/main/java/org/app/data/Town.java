@@ -2,6 +2,8 @@ package org.app.data;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name="Town")
 public class Town {
@@ -17,6 +19,8 @@ public class Town {
     @ManyToOne
     @JoinColumn(name = "state_shortcut")
     private Country country;
+    @OneToMany(mappedBy = "town")
+    private Set<Weather_Hourly> weather_hourly_set;
 
     public void setAll(String name, String location, double lat, double lon, Country country){
         this.name = name;
@@ -64,5 +68,13 @@ public class Town {
 
     public Country getCountry() {
         return country;
+    }
+
+    public void setWeatherHourlySet(Set<Weather_Hourly> weather_hourly_set) {
+        this.weather_hourly_set = weather_hourly_set;
+    }
+
+    public Set<Weather_Hourly> getWeatherHourlySet() {
+        return weather_hourly_set;
     }
 }
