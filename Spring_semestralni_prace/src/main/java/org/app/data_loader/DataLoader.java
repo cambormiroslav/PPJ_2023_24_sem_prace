@@ -131,10 +131,8 @@ public class DataLoader {
             long dt_hourly = json_object.getLong(key) * 1000;
             Date date_hourly_weather = new Date(dt_hourly);
             return date_hourly_weather;
-            //return DateFor.format(date_hourly_weather);
         }catch(Exception e){
             return null;
-            //return "null";
         }
     }
 

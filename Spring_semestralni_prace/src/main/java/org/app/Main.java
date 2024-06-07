@@ -70,14 +70,12 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ApplicationContext ctx = app.run(args);
 
-        getCurrentWeather(ctx, "Bilina", "CZ");
+        downloadCurrentWeather(ctx, "Bilina", "CZ");
     }
 
-    private static void getCurrentWeather(ApplicationContext ctx, String town, String country){
+    private static Town downloadTownAndCountry(ApplicationContext ctx, String town, String country){
         CountryService country_service = ctx.getBean(CountryService.class);
         TownService town_service = ctx.getBean(TownService.class);
-        Weather_CurrentService weather_current_service = ctx.getBean(Weather_CurrentService.class);
-
         try{
             JSONObject json_obj_lat_lon = data_loader.load_town_and_country(town, country);
 
@@ -94,6 +92,22 @@ public class Main {
 
             country_service.createOrUpdate(country_class);
             town_service.createOrUpdate(town_class);
+
+            return town_class;
+        }catch (IOException e){
+            System.out.println("Weather Current can not be downloaded.");
+        }
+        return null;
+    }
+
+    private static void downloadCurrentWeather(ApplicationContext ctx, String town, String country){
+        Weather_CurrentService weather_current_service = ctx.getBean(Weather_CurrentService.class);
+
+        try{
+            Town town_class = downloadTownAndCountry(ctx, town, country);
+
+            double lon = town_class.getLon();
+            double lat = town_class.getLat();
 
             JSONObject json_current_wheather = data_loader.load_current_weather(town, lat, lon);
 
@@ -135,10 +149,32 @@ public class Main {
 
             weather_current_service.delete();
             Weather_Current weather_current_class = ctx.getBean(Weather_Current.class);
-            weather_current_class.setAll(datetime, town_class, main_description, alongside_description,
-                    icon, base, temperature, feel_like_temperature, min_temperature, max_temperature,
-                    pressure, humidity, sea_level, ground_level, visibility, wind_speed, wind_degrees,
-                    wind_gust, clouds_percentage, rain_volume, sunrise, sunset);
+            weather_current_class.setAllNotNull(datetime, town_class, main_description, alongside_description,
+                    icon, base, temperature, feel_like_temperature, min_temperature, max_temperature);
+
+            if(pressure != -20000)
+                weather_current_class.setPressure(pressure);
+            if(humidity != -20000)
+                weather_current_class.setHumidity(humidity);
+            if(sea_level != -20000)
+                weather_current_class.setSea_level(sea_level);
+            if(ground_level != -20000)
+                weather_current_class.setGround_level(ground_level);
+            if(visibility != -20000)
+                weather_current_class.setVisibility(visibility);
+            if(wind_speed != -20000.0)
+                weather_current_class.setWind_speed(wind_speed);
+            if(wind_degrees != -20000)
+                weather_current_class.setWind_degrees(wind_degrees);
+            if(wind_gust != -20000.0)
+                weather_current_class.setWind_gust(wind_gust);
+            if(clouds_percentage != -20000)
+                weather_current_class.setClouds(clouds_percentage);
+            if(rain_volume != -20000.0)
+                weather_current_class.setRain_volume_1h(rain_volume);
+
+            weather_current_class.setSunrise(sunrise);
+            weather_current_class.setSunset(sunset);
             weather_current_service.createOrUpdate(weather_current_class);
         }catch (IOException e){
             System.out.println("Weather Current can not be downloaded.");

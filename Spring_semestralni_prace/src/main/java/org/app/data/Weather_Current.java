@@ -30,25 +30,25 @@ public class Weather_Current {
     @Column(name = "temperature_max")
     private double temperature_max;
     @Column(name = "pressure")
-    private int pressure;
+    private Integer pressure;
     @Column(name = "humidity")
-    private int humidity;
+    private Integer humidity;
     @Column(name = "sea_level")
-    private int sea_level;
+    private Integer sea_level;
     @Column(name = "ground_level")
-    private int ground_level;
+    private Integer ground_level;
     @Column(name = "visibility")
-    private int visibility;
+    private Integer visibility;
     @Column(name = "wind_speed")
-    private double wind_speed;
+    private Double wind_speed;
     @Column(name = "wind_degrees")
-    private int wind_degrees;
+    private Integer wind_degrees;
     @Column(name = "wind_gust")
-    private double wind_gust;
+    private Double wind_gust;
     @Column(name = "clouds")
-    private int clouds;
+    private Integer clouds;
     @Column(name = "rain_volume_1h")
-    private double rain_volume_1h;
+    private Double rain_volume_1h;
     @Column(name = "sunrise")
     private Date sunrise;
     @Column(name = "sunset")
@@ -82,6 +82,21 @@ public class Weather_Current {
         this.rain_volume_1h = rain_volume_1h;
         this.sunrise = sunrise;
         this.sunset = sunset;
+    }
+
+    public void setAllNotNull(Date date, Town town, String main_description, String alongside_description,
+                       String icon, String base, double temperature, double feel_like_temperature,
+                       double temperature_min, double temperature_max){
+        this.date = date;
+        this.town = town;
+        this.main_description = main_description;
+        this.alongside_description = alongside_description;
+        this.icon = icon;
+        this.base = base;
+        this.temperature = temperature;
+        this.feel_like_temperature = feel_like_temperature;
+        this.temperature_min = temperature_min;
+        this.temperature_max = temperature_max;
     }
 
     public void setDate(Date date) {
