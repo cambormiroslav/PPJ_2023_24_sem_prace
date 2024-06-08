@@ -68,6 +68,23 @@ public class Main {
         //downloadCurrentWeather(ctx, "Liberec", "CZ");
         //downloadHourlyWeather(ctx, "Bílina", "CZ");
         downloadFourteenDaysWeather(ctx, "Liberec", "CZ");
+        //getWeatherCurrentLast(ctx, "Liberec");
+        //getWeatherCurrentNow(ctx, "Bílina","CZ");
+    }
+
+    private static void getWeatherCurrentLast(ApplicationContext ctx, String town){
+        Weather_CurrentService weather_current_service = ctx.getBean(Weather_CurrentService.class);
+        List<Weather_Current> weather_current_list = weather_current_service.getWeatherCurrentForTown(town);
+        for(Weather_Current weather : weather_current_list)
+            System.out.println(weather);
+    }
+
+    private static void getWeatherCurrentNow(ApplicationContext ctx, String town, String country){
+        downloadCurrentWeather(ctx, town, country);
+        Weather_CurrentService weather_current_service = ctx.getBean(Weather_CurrentService.class);
+        List<Weather_Current> weather_current_list = weather_current_service.getWeatherCurrentForTown(town);
+        for(Weather_Current weather : weather_current_list)
+            System.out.println(weather);
     }
 
     private static Town downloadTownAndCountry(ApplicationContext ctx, String town, String country){

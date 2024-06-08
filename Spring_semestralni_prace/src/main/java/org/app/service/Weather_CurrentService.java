@@ -29,4 +29,8 @@ public class Weather_CurrentService {
     public void delete(Weather_Current weather_current) {
         weather_current_repository.delete(weather_current);
     }
+
+    public List<Weather_Current> getWeatherCurrentForTown(String town_name){
+        return weather_current_repository.findByTownName(town_name);
+    }
 }

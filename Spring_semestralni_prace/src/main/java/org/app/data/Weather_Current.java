@@ -276,4 +276,18 @@ public class Weather_Current {
     public Date getSunset() {
         return sunset;
     }
+
+    @Override
+    public String toString(){
+        return String.format("Weather Current: \n{\n\tdate : %s,\n\ttown name : %s,\n\tmain description : %s," +
+                        "\n\talongside description : %s,\n\ticon : %s,\n\tbase : %s,\n\ttemperature : %f,\n\tfeel " +
+                        "like temperature : %f,\n\ttemperature min : %f,\n\ttemperature max : %f,\n\tpressure : %d," +
+                        "\n\thumidity : %d,\n\tsea level : %d,\n\tground level : %d,\n\tvisibility : %d,\n\twind speed " +
+                        ": %f,\n\twind degrees : %d,\n\twind gust : %f,\n\tclouds percentage : %d,\n\train volume : %f," +
+                        "\n\tsunrise : %s,\n\tsunset : %s\n}",
+                date.toString(), town.getName(), main_description, alongside_description, icon, base, temperature,
+                feel_like_temperature, temperature_min, temperature_max, pressure, humidity, sea_level, ground_level,
+                visibility, wind_speed, wind_degrees, wind_gust, clouds, rain_volume_1h, sunrise.toString(),
+                sunset.toString());
+    }
 }
