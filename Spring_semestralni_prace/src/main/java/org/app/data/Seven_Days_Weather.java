@@ -6,8 +6,8 @@ import java.util.Date;
 
 @Entity
 @IdClass(CompositeKey.class)
-@Table(name="Fourteen_Days_Weather")
-public class Fourteen_Days_Weather {
+@Table(name="Seven_Days_Weather")
+public class Seven_Days_Weather {
     @Id
     @Column(name = "date")
     private Date date;
@@ -146,7 +146,7 @@ public class Fourteen_Days_Weather {
 
     @Override
     public String toString(){
-        return String.format("Fourteen Days Weather AVG: \n{\n\tdate : %s,\n\ttown name : %s,\n\ttemperature : %f" +
+        return String.format("Seven Days Weather AVG: \n{\n\tdate : %s,\n\ttown name : %s,\n\ttemperature : %f" +
                         ",\n\tfeel like temperature : %f,\n\ttemperature min : %f,\n\ttemperature max : %f,\n\t" +
                         "pressure : %d,\n\thumidity : %d,\n\twind speed : %f,\n\twind degrees : %d,\n\twind gust :" +
                         " %f,\n\tclouds percentage : %d\n}",

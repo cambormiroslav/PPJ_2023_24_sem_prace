@@ -13,6 +13,23 @@ import java.util.Date;
 public class DataLoader {
     private static SimpleDateFormat DateFor = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    public JSONObject getHistoricalData(double lat, double lon, int days) throws IOException {
+        Date date = new Date();
+        long date_timestamp_unix = date.getTime() / 1000;
+        long one_day_unix = 86400;
+        long start_timestamp_unix;
+        if(days == 1) {
+            start_timestamp_unix = date_timestamp_unix - one_day_unix;
+        }else if (days == 7){
+            start_timestamp_unix = date_timestamp_unix - (7 * one_day_unix);
+        }else{
+            start_timestamp_unix = date_timestamp_unix - (14 * one_day_unix);
+        }
+        String url = String.format("https://history.openweathermap.org/data/2.5/history/city?lat=%s&lon=%s&type=hour&start=%d&end=%d&units=metric&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon, start_timestamp_unix, date_timestamp_unix);
+        return get_JSON(url);
+    }
+
+
     public JSONObject load_town_and_country(String town, String country) throws IOException {
         String url_to_get_lat_and_lon = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&APPID=b90ae8e9a160e17dfd9a9115dac4cb80",town, country);
         JSONObject json_obj_lat_lon = get_JSON_without_out_array(url_to_get_lat_and_lon);
@@ -57,8 +74,7 @@ public class DataLoader {
     public Date get_datetime(JSONObject json_object, String key){
         try{
             long dt_hourly = json_object.getLong(key) * 1000;
-            Date date_hourly_weather = new Date(dt_hourly);
-            return date_hourly_weather;
+            return new Date(dt_hourly);
         }catch(Exception e){
             return null;
         }
