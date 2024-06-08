@@ -26,21 +26,6 @@ import java.util.*;
 public class Main {
     private static DataLoader data_loader = new DataLoader();
 
-    /*@Bean
-    public Weather_CurrentService weatherCurrentService(){
-        return new Weather_CurrentService();
-    }*/
-
-    /*@Bean
-    public Weather_HourlyService weatherHourlyService(){
-        return new Weather_HourlyService();
-    }*/
-
-    /*@Bean
-    public Fourteen_Days_WeatherService fourteenDaysWeatherService(){
-        return new Fourteen_Days_WeatherService();
-    }*/
-
     @Bean
     public CountryService countryService() {
         return new CountryService();
@@ -80,8 +65,9 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ApplicationContext ctx = app.run(args);
 
-        downloadCurrentWeather(ctx, "Liberec", "CZ");
-        //downloadHourlyWeather(ctx, "Liberec", "CZ");
+        //downloadCurrentWeather(ctx, "Liberec", "CZ");
+        //downloadHourlyWeather(ctx, "Bílina", "CZ");
+        downloadFourteenDaysWeather(ctx, "Liberec", "CZ");
     }
 
     private static Town downloadTownAndCountry(ApplicationContext ctx, String town, String country){
@@ -288,11 +274,104 @@ public class Main {
                     weather_hourly_class.setPrecipitation_of_rain(precipitation_of_rain);
                 if(rain_volume != -20000.0)
                     weather_hourly_class.setRain_volume_1h(rain_volume);
+
                 weather_hourly_service.createOrUpdate(weather_hourly_class);
             }
         }
         catch (IOException e){
-            System.out.println("Weather Current can not be downloaded.");
+            System.out.println("Weather Hourly can not be downloaded.");
+        }
+    }
+
+    private static void downloadFourteenDaysWeather(ApplicationContext ctx, String town, String country){
+        TownService town_service = ctx.getBean(TownService.class);
+        Fourteen_Days_WeatherService fourteen_days_weather_service = ctx.getBean(Fourteen_Days_WeatherService.class);
+        Town town_class;
+
+        try{
+            if(town_service.exists(town))
+                town_class = town_service.getTownById(town);
+            else
+                town_class = downloadTownAndCountry(ctx, town, country);
+
+            double lon = town_class.getLon();
+            double lat = town_class.getLat();
+
+            List<Fourteen_Days_Weather> fourteen_days_weather_list = fourteen_days_weather_service.getFourteenDaysWeathers();
+            for(Fourteen_Days_Weather weather : fourteen_days_weather_list){
+                if(weather.getTown().getName().equals(town))
+                    fourteen_days_weather_service.delete(weather);
+            }
+
+            JSONArray json_array_14days = data_loader.load_14days_weather(town, lat, lon);
+
+            for (Object weather_14days : json_array_14days){
+                JSONObject json_object_14days = (JSONObject) weather_14days;
+
+                Date datetime = data_loader.get_datetime(json_object_14days, "dt");
+
+                //town
+
+                JSONArray weather_14days_json_array = json_object_14days.getJSONArray("weather");
+                JSONObject weather_14days_json = weather_14days_json_array.getJSONObject(0);
+                String main_description = data_loader.get_string_part(weather_14days_json, "main");
+                String alongside_description = data_loader.get_string_part(weather_14days_json, "description");
+                String icon = data_loader.get_string_part(weather_14days_json, "icon");
+
+                JSONObject temperature_json = json_object_14days.getJSONObject("temp");
+                double temperature_min = data_loader.get_double_part(temperature_json, "min");
+                double temperature_max = data_loader.get_double_part(temperature_json, "max");
+                double temperature_day = data_loader.get_double_part(temperature_json, "day");
+                double temperature_night = data_loader.get_double_part(temperature_json, "night");
+                double temperature_eve = data_loader.get_double_part(temperature_json, "eve");
+                double temperature_morning = data_loader.get_double_part(temperature_json, "morn");
+
+                double feel_like_temperature_day = data_loader.get_double_part(temperature_json, "day");
+                double feel_like_temperature_night = data_loader.get_double_part(temperature_json, "night");
+                double feel_like_temperature_eve = data_loader.get_double_part(temperature_json, "eve");
+                double feel_like_temperature_morning = data_loader.get_double_part(temperature_json, "morn");
+
+                int pressure = data_loader.get_int_part(json_object_14days, "pressure");
+                int humidity = data_loader.get_int_part(json_object_14days, "humidity");
+                double wind_speed = data_loader.get_double_part(json_object_14days, "speed");
+                int wind_degrees = data_loader.get_int_part(json_object_14days, "deg");
+                double wind_gust = data_loader.get_double_part(json_object_14days, "gust");
+                int clouds_percentage = data_loader.get_int_part(json_object_14days, "clouds");
+                double precipitation_of_rain = data_loader.get_double_part(json_object_14days, "pop");
+                double rain_volume = data_loader.get_double_part(json_object_14days, "rain");
+                Date sunrise = data_loader.get_datetime(json_object_14days, "sunrise");
+                Date sunset = data_loader.get_datetime(json_object_14days, "sunset");
+
+                Fourteen_Days_Weather fourteen_days_weather_class = ctx.getBean(Fourteen_Days_Weather.class);
+
+                fourteen_days_weather_class.setAllNotNull(datetime, town_class, main_description, alongside_description,
+                        icon, temperature_min, temperature_max, temperature_day, temperature_night, temperature_eve,
+                        temperature_morning, feel_like_temperature_day, feel_like_temperature_night,
+                        feel_like_temperature_eve, feel_like_temperature_morning);
+
+                if(pressure != -20000)
+                    fourteen_days_weather_class.setPressure(pressure);
+                if(humidity != -20000)
+                    fourteen_days_weather_class.setHumidity(humidity);
+                if(wind_speed != -20000.0)
+                    fourteen_days_weather_class.setWind_speed(wind_speed);
+                if(wind_degrees != -20000)
+                    fourteen_days_weather_class.setWind_degrees(wind_degrees);
+                if(wind_gust != -20000.0)
+                    fourteen_days_weather_class.setWind_gust(wind_gust);
+                if(clouds_percentage != -20000)
+                    fourteen_days_weather_class.setClouds(clouds_percentage);
+                if(precipitation_of_rain != -20000.0)
+                    fourteen_days_weather_class.setPrecipitation_of_rain(precipitation_of_rain);
+                if(rain_volume != -20000.0)
+                    fourteen_days_weather_class.setRain(rain_volume);
+                fourteen_days_weather_class.setSunrise(sunrise);
+                fourteen_days_weather_class.setSunset(sunset);
+
+                fourteen_days_weather_service.createOrUpdate(fourteen_days_weather_class);
+            }
+        }catch (IOException e){
+            System.out.println("Fourteen Days Weather can not be downloaded.");
         }
     }
 }

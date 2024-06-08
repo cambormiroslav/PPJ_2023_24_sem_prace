@@ -20,49 +20,11 @@ public class DataLoader {
         return json_obj_lat_lon;
     }
 
-    public void load_14days_weather(String town, double lat, double lon) throws IOException {
+    public JSONArray load_14days_weather(String town, double lat, double lon) throws IOException {
         String url_14days_weather = String.format("http://api.openweathermap.org/data/2.5/forecast/daily?lat=%f&lon=%f&units=metric&cnt=14&appid=b90ae8e9a160e17dfd9a9115dac4cb80", lat, lon);
         JSONObject json_14days_weather = get_JSON(url_14days_weather);
 
-        JSONArray json_array_14days = json_14days_weather.getJSONArray("list");
-
-        for (Object weather_14days : json_array_14days){
-            JSONObject json_object_14days = (JSONObject) weather_14days;
-
-            Date fourteen_days_datetime = get_datetime(json_object_14days, "dt");
-
-            //town
-
-            JSONArray weather_14days_json_array = json_object_14days.getJSONArray("weather");
-            JSONObject weather_14days_json = weather_14days_json_array.getJSONObject(0);
-            String main_description = get_string_part(weather_14days_json, "main");
-            String alongside_description = get_string_part(weather_14days_json, "description");
-            String icon = get_string_part(weather_14days_json, "icon");
-
-            JSONObject temperature_json = json_object_14days.getJSONObject("temp");
-            double temperature_min = get_double_part(temperature_json, "min");
-            double temperature_max = get_double_part(temperature_json, "max");
-            double temperature_day = get_double_part(temperature_json, "day");
-            double temperature_night = get_double_part(temperature_json, "night");
-            double temperature_eve = get_double_part(temperature_json, "eve");
-            double temperature_morning = get_double_part(temperature_json, "morn");
-
-            double feel_like_temperature_day = get_double_part(temperature_json, "day");
-            double feel_like_temperature_night = get_double_part(temperature_json, "night");
-            double feel_like_temperature_eve = get_double_part(temperature_json, "eve");
-            double feel_like_temperature_morning = get_double_part(temperature_json, "morn");
-
-            int pressure = get_int_part(json_object_14days, "pressure");
-            int humidity = get_int_part(json_object_14days, "humidity");
-            double wind_speed = get_double_part(json_object_14days, "speed");
-            int wind_degrees = get_int_part(json_object_14days, "deg");
-            double wind_gust = get_double_part(json_object_14days, "gust");
-            int clouds_percentage = get_int_part(json_object_14days, "clouds");
-            double precipitation_of_rain = get_double_part(json_object_14days, "pop");
-            double rain_volume_1h = get_double_part(json_object_14days, "rain");
-            Date sunrise = get_datetime(json_object_14days, "sunrise");
-            Date sunset = get_datetime(json_object_14days, "sunset");
-        }
+        return json_14days_weather.getJSONArray("list");
     }
 
     public JSONArray load_hourly_weather(double lat, double lon) throws IOException {
