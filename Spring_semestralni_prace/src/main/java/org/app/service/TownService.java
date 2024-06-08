@@ -33,4 +33,12 @@ public class TownService {
     public Boolean exists(String name){
         return town_repository.existsById(name);
     }
+
+    public void delete(Town town){
+        town_repository.delete(town);
+    }
+
+    public List<Town> findByTownName(String town_name){
+        return town_repository.findByName(town_name);
+    }
 }

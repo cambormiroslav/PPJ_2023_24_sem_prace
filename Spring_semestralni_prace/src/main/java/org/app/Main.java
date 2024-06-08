@@ -65,10 +65,10 @@ public class Main {
         SpringApplication app = new SpringApplication(Main.class);
         ApplicationContext ctx = app.run(args);
 
-        //downloadCurrentWeather(ctx, "Bílina", "CZ");
-        //downloadDayWeather(ctx, "'Ústí nad Labem'", "CZ");
-        //downloadFourteenDaysWeather(ctx, "Liberec", "CZ");
-        //downloadSevenDaysWeather(ctx, "Liberec", "CZ");
+        downloadCurrentWeather(ctx, "Bílina", "CZ");
+        //downloadDayWeather(ctx, "Bílina", "CZ");
+        //downloadFourteenDaysWeather(ctx, "Bílina", "CZ");
+        //downloadSevenDaysWeather(ctx, "Bílina", "CZ");
 
         //getWeatherCurrentLast(ctx, "Liberec");
         //getWeatherCurrentNow(ctx, "Bílina","CZ");
@@ -78,6 +78,13 @@ public class Main {
         //getSevenDaysWeatherNowAVG(ctx, "Liberec", "CZ");
         //getFourteenDaysWeatherLastAVG(ctx, "Liberec");
         //getFourteenDaysWeatherNowAVG(ctx, "Liberec", "CZ");
+
+        //deleteWeatherCurrent(ctx, "Liberec");
+        //deleteWeatherDay(ctx, "Liberec");
+        //deleteSevenDaysWeather(ctx, "Liberec");
+        //deleteFourteenDaysWeather(ctx, "Liberec");
+        //deleteTown(ctx, "Bílina");
+        //deleteCountry(ctx, "CZ");
     }
 
     private static void getWeatherCurrentLast(ApplicationContext ctx, String town){
@@ -92,40 +99,82 @@ public class Main {
         getWeatherCurrentLast(ctx, town);
     }
 
-    public static void getWeatherDayLastAVG(ApplicationContext ctx, String town){
+    private static void getWeatherDayLastAVG(ApplicationContext ctx, String town){
         Weather_DayService weather_day_service = ctx.getBean(Weather_DayService.class);
         List<Weather_Day> weather_day_list = weather_day_service.getWeatherForTown(town);
         for(Weather_Day weather: weather_day_list)
             System.out.println(weather);
     }
 
-    public static void getWeatherDayNowAVG(ApplicationContext ctx, String town, String country){
+    private static void getWeatherDayNowAVG(ApplicationContext ctx, String town, String country){
         downloadDayWeather(ctx, town, country);
         getWeatherDayLastAVG(ctx, town);
     }
 
-    public static void getSevenDaysWeatherLastAVG(ApplicationContext ctx, String town){
+    private static void getSevenDaysWeatherLastAVG(ApplicationContext ctx, String town){
         Seven_Days_WeatherService seven_days_weather_service = ctx.getBean(Seven_Days_WeatherService.class);
         List<Seven_Days_Weather> seven_days_weather_list = seven_days_weather_service.getWeatherForTown(town);
         for(Seven_Days_Weather weather: seven_days_weather_list)
             System.out.println(weather);
     }
 
-    public static void getSevenDaysWeatherNowAVG(ApplicationContext ctx, String town, String country){
+    private static void getSevenDaysWeatherNowAVG(ApplicationContext ctx, String town, String country){
         downloadSevenDaysWeather(ctx, town, country);
         getSevenDaysWeatherLastAVG(ctx, town);
     }
 
-    public static void getFourteenDaysWeatherLastAVG(ApplicationContext ctx, String town){
+    private static void getFourteenDaysWeatherLastAVG(ApplicationContext ctx, String town){
         Fourteen_Days_WeatherService fourteen_days_weather_service = ctx.getBean(Fourteen_Days_WeatherService.class);
         List<Fourteen_Days_Weather> fourteen_days_weather_list = fourteen_days_weather_service.getWeatherForTown(town);
         for(Fourteen_Days_Weather weather : fourteen_days_weather_list)
             System.out.println(weather);
     }
 
-    public static void getFourteenDaysWeatherNowAVG(ApplicationContext ctx, String town, String country){
+    private static void getFourteenDaysWeatherNowAVG(ApplicationContext ctx, String town, String country){
         downloadFourteenDaysWeather(ctx, town, country);
         getFourteenDaysWeatherLastAVG(ctx, town);
+    }
+
+    private static void deleteCountry(ApplicationContext ctx, String shortcut){
+        CountryService country_service = ctx.getBean(CountryService.class);
+        List<Country> country_list = country_service.getCountryByShortcut(shortcut);
+        for (Country country : country_list)
+            country_service.delete(country);
+    }
+
+    private static void deleteTown(ApplicationContext ctx, String town_name){
+        TownService town_service = ctx.getBean(TownService.class);
+        List<Town> town_list = town_service.findByTownName(town_name);
+        for(Town town : town_list)
+            town_service.delete(town);
+    }
+
+    private static void deleteWeatherCurrent(ApplicationContext ctx, String town_name){
+        Weather_CurrentService weather_current_service = ctx.getBean(Weather_CurrentService.class);
+        List<Weather_Current> weather_current_list = weather_current_service.getWeatherCurrentForTown(town_name);
+        for(Weather_Current weather : weather_current_list)
+            weather_current_service.delete(weather);
+    }
+
+    private static void deleteWeatherDay(ApplicationContext ctx, String town_name){
+        Weather_DayService weather_day_service = ctx.getBean(Weather_DayService.class);
+        List<Weather_Day> weather_day_list = weather_day_service.getWeatherForTown(town_name);
+        for(Weather_Day weather : weather_day_list)
+            weather_day_service.delete(weather);
+    }
+
+    private static void deleteSevenDaysWeather(ApplicationContext ctx, String town_name){
+        Seven_Days_WeatherService seven_days_weather_service = ctx.getBean(Seven_Days_WeatherService.class);
+        List<Seven_Days_Weather> seven_days_weather_list = seven_days_weather_service.getWeatherForTown(town_name);
+        for(Seven_Days_Weather weather : seven_days_weather_list)
+            seven_days_weather_service.delete(weather);
+    }
+
+    private static void deleteFourteenDaysWeather(ApplicationContext ctx, String town){
+        Fourteen_Days_WeatherService fourteen_days_weather_service = ctx.getBean(Fourteen_Days_WeatherService.class);
+        List<Fourteen_Days_Weather> fourteen_days_weather_list = fourteen_days_weather_service.getWeatherForTown(town);
+        for(Fourteen_Days_Weather weather : fourteen_days_weather_list)
+            fourteen_days_weather_service.delete(weather);
     }
 
     private static Town downloadTownAndCountry(ApplicationContext ctx, String town, String country){

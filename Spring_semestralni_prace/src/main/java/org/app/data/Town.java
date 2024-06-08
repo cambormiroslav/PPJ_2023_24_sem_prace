@@ -1,6 +1,8 @@
 package org.app.data;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
@@ -17,6 +19,7 @@ public class Town {
     @Column(name="lon")
     private double lon;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "state_shortcut")
     private Country country;
 

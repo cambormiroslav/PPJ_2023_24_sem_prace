@@ -22,4 +22,12 @@ public class CountryService {
     public void createOrUpdate(Country country){
         country_repository.save(country);
     }
+
+    public void delete(Country country){
+        country_repository.delete(country);
+    }
+
+    public List<Country> getCountryByShortcut(String shortcut){
+        return country_repository.findByCountryShortcut(shortcut);
+    }
 }

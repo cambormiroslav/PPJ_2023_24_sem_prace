@@ -1,6 +1,8 @@
 package org.app.data;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -13,6 +15,7 @@ public class Weather_Day {
     private Date date;
     @Id
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "town_name")
     private Town town;
     @Column(name = "temperature")
