@@ -27,4 +27,8 @@ public class Weather_HourlyService {
     public void delete(Weather_Hourly weather_hourly) {
         weather_hourly_repository.delete(weather_hourly);
     }
+
+    public List<Weather_Hourly> getWeatherCurrentForTown(String town_name){
+        return weather_hourly_repository.findByTownName(town_name);
+    }
 }

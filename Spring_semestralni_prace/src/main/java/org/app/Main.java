@@ -1,21 +1,17 @@
 package org.app;
 
-import jakarta.validation.constraints.Null;
 import org.app.data.*;
 import org.app.data.Weather_Current;
+import org.app.data_avg.WeatherHourlyAVG;
 import org.app.data_loader.DataLoader;
-import org.app.repositories.CountryRepository;
 import org.app.service.*;
-import org.decimal4j.util.DoubleRounder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.io.IOException;
 import java.util.*;
@@ -67,9 +63,11 @@ public class Main {
 
         //downloadCurrentWeather(ctx, "Liberec", "CZ");
         //downloadHourlyWeather(ctx, "Bílina", "CZ");
-        downloadFourteenDaysWeather(ctx, "Liberec", "CZ");
+        //downloadFourteenDaysWeather(ctx, "Liberec", "CZ");
         //getWeatherCurrentLast(ctx, "Liberec");
         //getWeatherCurrentNow(ctx, "Bílina","CZ");
+        //getWeatherHourlyLastAVG(ctx, "Liberec");
+        getWeatherHourlyNowAVG(ctx, "Liberec", "CZ");
     }
 
     private static void getWeatherCurrentLast(ApplicationContext ctx, String town){
@@ -77,6 +75,19 @@ public class Main {
         List<Weather_Current> weather_current_list = weather_current_service.getWeatherCurrentForTown(town);
         for(Weather_Current weather : weather_current_list)
             System.out.println(weather);
+    }
+
+    public static void getWeatherHourlyLastAVG(ApplicationContext ctx, String town){
+        WeatherHourlyAVG weather_hourly_avg = new WeatherHourlyAVG();
+        weather_hourly_avg.setAll(ctx, town);
+        System.out.println(weather_hourly_avg);
+    }
+
+    public static void getWeatherHourlyNowAVG(ApplicationContext ctx, String town, String country){
+        downloadFourteenDaysWeather(ctx, town, country);
+        WeatherHourlyAVG weather_hourly_avg = new WeatherHourlyAVG();
+        weather_hourly_avg.setAll(ctx, town);
+        System.out.println(weather_hourly_avg);
     }
 
     private static void getWeatherCurrentNow(ApplicationContext ctx, String town, String country){
