@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2024-06-07 17:11:41.593
+-- Last modification date: 2024-06-08 22:01:54.656
 
 -- tables
 -- Table: Country
@@ -12,30 +12,34 @@ CREATE TABLE Country (
 CREATE TABLE Fourteen_Days_Weather (
     date datetime  NOT NULL,
     town_name nvarchar(20)  NOT NULL,
-    main_description nvarchar(10)  NOT NULL,
-    alongside_description nvarchar(20)  NOT NULL,
-    icon nvarchar(10)  NOT NULL,
+    temperature double(4,2)  NOT NULL,
     temperature_min double(4,2)  NOT NULL,
     temperature_max double(4,2)  NOT NULL,
-    temperature_day double(4,2)  NOT NULL,
-    temperature_night double(4,2)  NOT NULL,
-    temperature_eve double(4,2)  NOT NULL,
-    temperature_morning double(4,2)  NOT NULL,
-    feel_like_temperature_day double(4,2)  NOT NULL,
-    feel_like_temperature_night double(4,2)  NOT NULL,
-    feel_like_temperature_eve double(4,2)  NOT NULL,
-    feel_like_temperature_morning double(4,2)  NOT NULL,
+    feel_like_temperature double(4,2)  NOT NULL,
     pressure int  NULL,
     humidity int  NULL,
     wind_speed double(5,2)  NULL,
     wind_degrees int  NULL,
     wind_gust double(5,2)  NULL,
     clouds int  NULL,
-    precipitation_of_rain double(3,2)  NULL,
-    rain double(4,2)  NULL,
-    sunrise datetime  NULL,
-    sunset datetime  NULL,
     CONSTRAINT Fourteen_Days_Weather_pk PRIMARY KEY (date,town_name)
+);
+
+-- Table: Seven_Days_Weather
+CREATE TABLE Seven_Days_Weather (
+    date datetime  NOT NULL,
+    town_name nvarchar(20)  NOT NULL,
+    temperature double(4,2)  NOT NULL,
+    temperature_min double(4,2)  NOT NULL,
+    temperature_max double(4,2)  NOT NULL,
+    feel_like_temperature double(4,2)  NOT NULL,
+    pressure int  NULL,
+    humidity int  NULL,
+    wind_speed double(5,2)  NULL,
+    wind_degrees int  NULL,
+    wind_gust double(5,2)  NULL,
+    clouds int  NULL,
+    CONSTRAINT Seven_Days_Weather_pk PRIMARY KEY (date)
 );
 
 -- Table: Town
@@ -75,47 +79,48 @@ CREATE TABLE Weather_Current (
     CONSTRAINT Weather_Current_pk PRIMARY KEY (date,town_name)
 );
 
--- Table: Weather_Hourly
-CREATE TABLE Weather_Hourly (
+-- Table: Weather_Day
+CREATE TABLE Weather_Day (
     date datetime  NOT NULL,
     town_name nvarchar(20)  NOT NULL,
-    main_description nvarchar(10)  NOT NULL,
-    alongside_description nvarchar(20)  NOT NULL,
-    icon nvarchar(10)  NOT NULL,
     temperature double(4,2)  NOT NULL,
     feel_like_temperature double(4,2)  NOT NULL,
     temperature_min double(4,2)  NOT NULL,
     temperature_max double(4,2)  NOT NULL,
     pressure int  NULL,
     humidity int  NULL,
-    sea_level int  NULL,
-    ground_level int  NULL,
-    visibility int  NULL,
     wind_speed double(5,2)  NULL,
     wind_degrees int  NULL,
     wind_gust double(5,2)  NULL,
     clouds int  NULL,
-    precipitation_of_rain double(3,2)  NULL,
-    rain_volume_1h double(4,2)  NULL,
-    CONSTRAINT Weather_Hourly_pk PRIMARY KEY (date,town_name)
+    CONSTRAINT Weather_Day_pk PRIMARY KEY (date,town_name)
 );
 
 -- foreign keys
+-- Reference: Copy_of_Fourteen_Days_Weather_Town (table: Seven_Days_Weather)
+ALTER TABLE Seven_Days_Weather ADD CONSTRAINT Copy_of_Fourteen_Days_Weather_Town FOREIGN KEY Copy_of_Fourteen_Days_Weather_Town (town_name)
+    REFERENCES Town (name)
+    ON DELETE CASCADE;
+
 -- Reference: FK_Current_Weather (table: Weather_Current)
 ALTER TABLE Weather_Current ADD CONSTRAINT FK_Current_Weather FOREIGN KEY FK_Current_Weather (town_name)
-    REFERENCES Town (name);
+    REFERENCES Town (name)
+    ON DELETE CASCADE;
 
 -- Reference: FK_Fouteen_Day_Weather (table: Fourteen_Days_Weather)
 ALTER TABLE Fourteen_Days_Weather ADD CONSTRAINT FK_Fouteen_Day_Weather FOREIGN KEY FK_Fouteen_Day_Weather (town_name)
-    REFERENCES Town (name);
+    REFERENCES Town (name)
+    ON DELETE CASCADE;
 
--- Reference: FK_Hourly_Weather (table: Weather_Hourly)
-ALTER TABLE Weather_Hourly ADD CONSTRAINT FK_Hourly_Weather FOREIGN KEY FK_Hourly_Weather (town_name)
-    REFERENCES Town (name);
+-- Reference: FK_Hourly_Weather (table: Weather_Day)
+ALTER TABLE Weather_Day ADD CONSTRAINT FK_Hourly_Weather FOREIGN KEY FK_Hourly_Weather (town_name)
+    REFERENCES Town (name)
+    ON DELETE CASCADE;
 
 -- Reference: FK_Town (table: Town)
 ALTER TABLE Town ADD CONSTRAINT FK_Town FOREIGN KEY FK_Town (state_shortcut)
-    REFERENCES Country (shortcut);
+    REFERENCES Country (shortcut)
+    ON DELETE CASCADE;
 
 -- End of file.
 
