@@ -149,10 +149,10 @@ public class Seven_Days_Weather {
 
     @Override
     public String toString(){
-        return String.format("Seven Days Weather AVG: \n{\n\tdate : %s,\n\ttown name : %s,\n\ttemperature : %f" +
-                        ",\n\tfeel like temperature : %f,\n\ttemperature min : %f,\n\ttemperature max : %f,\n\t" +
-                        "pressure : %d,\n\thumidity : %d,\n\twind speed : %f,\n\twind degrees : %d,\n\twind gust :" +
-                        " %f,\n\tclouds percentage : %d\n}",
+        return String.format("Seven Days Weather AVG: {date : %s, town name : %s, temperature : %f" +
+                        ", feel like temperature : %f, temperature min : %f, temperature max : %f, " +
+                        "pressure : %d, humidity : %d, wind speed : %f, wind degrees : %d, wind gust :" +
+                        " %f, clouds percentage : %d}",
                 date.toString(), town.getName(), temperature, feel_like_temperature, temperature_min, temperature_max,
                 pressure, humidity, wind_speed, wind_degrees, wind_gust, clouds);
     }

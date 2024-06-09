@@ -71,4 +71,8 @@ public class Town {
         return country;
     }
 
+    @Override
+    public String toString(){
+        return String.format("Town: {town name : %s, location : %s, lat : %f, lon : %f}", name, location, lat, lon);
+    }
 }

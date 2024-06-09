@@ -28,4 +28,9 @@ public class Country {
     public Set<Town> getTowns() {
         return towns;
     }
+
+    @Override
+    public String toString(){
+        return String.format("Country: {shortcut : %s}", shortcut);
+    }
 }
